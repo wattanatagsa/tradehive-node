@@ -1,0 +1,119 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model oauth_accounts {
+  id                  BigInt                  @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id             BigInt                  @db.UnsignedBigInt
+  provider            oauth_accounts_provider
+  provider_uid        String
+  email_from_provider String?                 @db.VarChar(255)
+  created_at          DateTime                @default(now()) @db.DateTime(0)
+  users               users                   @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "fk_oa_user")
+
+  @@unique([provider, provider_uid], map: "uq_provider_uid")
+  @@index([user_id], map: "fk_oa_user")
+  @@index([user_id], map: "idx_user")
+}
+
+model otp_send_log {
+  id         BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  phone_e164 String   @db.VarChar(20)
+  ip_addr    Bytes?   @db.VarBinary(16)
+  user_agent String?  @db.VarChar(255)
+  created_at DateTime @default(now()) @db.DateTime(0)
+  http_code  Int?
+  error_text String?  @db.Text
+
+  @@index([phone_e164, created_at], map: "idx_otp_log_phone_time")
+}
+
+model password_resets {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id    BigInt    @db.UnsignedBigInt
+  email      String    @db.VarChar(255)
+  token_hash String?   @db.Char(64)
+  code_hash  String?   @db.VarChar(255)
+  expires_at DateTime  @db.DateTime(0)
+  used_at    DateTime? @db.DateTime(0)
+  created_at DateTime  @default(now()) @db.DateTime(0)
+  users      users     @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "fk_pr_user")
+
+  @@index([user_id], map: "fk_pr_user")
+  @@index([email, expires_at], map: "idx_email_time")
+  @@index([user_id, expires_at], map: "idx_user_time")
+}
+
+model phone_otps {
+  id         BigInt              @id @default(autoincrement()) @db.UnsignedBigInt
+  phone_e164 String              @db.VarChar(20)
+  code_hash  String              @db.VarChar(255)
+  purpose    phone_otps_purpose  @default(signup)
+  expires_at DateTime            @db.DateTime(0)
+  attempts   Int                 @default(0) @db.UnsignedTinyInt
+  sent_via   phone_otps_sent_via @default(sms)
+  created_at DateTime            @default(now()) @db.DateTime(0)
+  used_at    DateTime?           @db.DateTime(0)
+  status     phone_otps_status   @default(sent)
+
+  @@index([created_at], map: "idx_created")
+  @@index([phone_e164, expires_at], map: "idx_phone_expires")
+  @@index([phone_e164, purpose, created_at], map: "idx_phone_purpose_created")
+}
+
+model user_sessions {
+  id           BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id      BigInt   @db.UnsignedBigInt
+  session_id   String   @unique(map: "uq_session") @db.Char(64)
+  user_agent   String?  @db.VarChar(255)
+  ip_addr      Bytes?   @db.VarBinary(16)
+  created_at   DateTime @default(now()) @db.DateTime(0)
+  last_seen_at DateTime @default(now()) @db.DateTime(0)
+  users        users    @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "fk_session_user")
+
+  @@index([user_id], map: "fk_us_user")
+  @@index([user_id, last_seen_at], map: "idx_user_lastseen")
+}
+
+model users {
+  id                BigInt            @id @default(autoincrement()) @db.UnsignedBigInt
+  name              String            @db.VarChar(100)
+  email             String?           @unique(map: "uq_users_email") @db.VarChar(255)
+  phone_e164        String?           @unique(map: "uq_users_phone") @db.VarChar(20)
+  password_hash     String            @db.VarChar(255)
+  is_phone_verified Boolean           @default(false)
+  is_email_verified Boolean           @default(false)
+  is_active         Boolean           @default(true)
+  avatar_url        String?           @db.VarChar(500)
+  created_at        DateTime          @default(now()) @db.DateTime(0)
+  updated_at        DateTime          @default(now()) @db.DateTime(0)
+  oauth_accounts    oauth_accounts[]
+  password_resets   password_resets[]
+  user_sessions     user_sessions[]
+}
+
+enum oauth_accounts_provider {
+  google
+  facebook
+}
+
+enum phone_otps_purpose {
+  signup
+  linking
+}
+
+enum phone_otps_sent_via {
+  sms
+}
+
+enum phone_otps_status {
+  sent
+  verified
+  expired
+  failed
+}
