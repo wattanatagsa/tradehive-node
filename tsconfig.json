@@ -1,33 +1,16 @@
 {
   "compilerOptions": {
-    // จัดโครงไฟล์
-    "rootDir": "./src",
-    "outDir": "./dist",
-
-    // ใช้ CommonJS สำหรับ Node.js
-    "module": "CommonJS",
+    "module": "commonjs",
     "moduleResolution": "node",
-    "target": "ES2022",
-    "lib": ["ES2022"],
+    "target": "es2022",
+    "lib": ["es2022"],
     "types": ["node"],
-
-    // เอาท์พุต/ดีบัก
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
-
-    // ความเข้มงวด
     "strict": true,
-    "exactOptionalPropertyTypes": true,
-    "noUncheckedIndexedAccess": true,
-
-    // ปรับให้ import ใช้งาน npm packages ได้ง่าย
     "esModuleInterop": true,
-
-    // ลด warning และเพิ่มความเข้ากันได้
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist",
+    "sourceMap": true
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*.ts"]
 }

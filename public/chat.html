@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TradeHive – Chat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style-chat.css">
+</head>
+
+<body>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo-dot" aria-hidden="true"></div>
+      <span>TradeHive</span>
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn" title="Notifications" aria-label="Notifications">
+        <!-- bell -->
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm8-6V11a8 8 0 1 0-16 0v5l-2 2v1h20v-1l-2-2Z" fill="currentColor"/></svg>
+      </button>
+      <div class="avatar small" title="You"></div>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <main class="chat-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <h2>Mensagens</h2>
+        <button class="ghost-btn" id="btn-new-chat" title="New chat" aria-label="New chat">＋</button>
+      </div>
+
+      <div class="search">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 21.5 21.5 20 15.5 14zM9.5 14A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z" fill="currentColor"/></svg>
+        <input type="text" placeholder="Pesquisar chat" />
+        <span class="tab-hint">CHAT</span>
+      </div>
+
+      <nav class="chat-list" id="chat-list">
+        <!-- Chat item -->
+        <a class="chat-item active" href="#">
+          <div class="avatar"></div>
+          <div class="info">
+            <div class="row">
+              <span class="name">Suporte ADMIN</span>
+              <time>08:01</time>
+            </div>
+            <p class="preview">Pesquisar chat</p>
+          </div>
+        </a>
+
+        <a class="chat-item" href="#">
+          <div class="avatar"></div>
+          <div class="info">
+            <div class="row">
+              <span class="name">Marketing Team</span>
+              <time>Yesterday</time>
+            </div>
+            <p class="preview">Assets ok. Let’s go live.</p>
+          </div>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Chat Panel -->
+    <section class="chat-panel">
+      <!-- Room header -->
+      <div class="room-head">
+        <div class="left">
+          <div class="avatar"></div>
+          <div class="who">
+            <div class="title">Suporte ADMIN</div>
+            <div class="sub">#CU6798H</div>
+          </div>
+        </div>
+        <div class="r-actions">
+          <button class="icon-btn" title="Call"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M6.6 10.8a15.05 15.05 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1.1-.2 11.7 11.7 0 0 0 3.7.6 1 1 0 0 1 1 1v3.5a1 1 0 0 1-1 1A18.9 18.9 0 0 1 3 5a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.7 11.7 0 0 0 .6 3.7 1 1 0 0 1-.2 1.1L6.6 10.8z" fill="currentColor"/></svg></button>
+          <button class="icon-btn" title="Video"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M17 10.5V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3.5l5 3.5V7l-5 3.5z" fill="currentColor"/></svg></button>
+          <button class="icon-btn" title="Info"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M11 9h2V7h-2v2zm0 8h2v-6h-2v6zm1-14a9 9 0 1 0 0 18 9 9 0 0 0 0-18z" fill="currentColor"/></svg></button>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="messages" id="messages">
+        <!-- Left bubble -->
+        <div class="msg-row left">
+          <div class="avatar tiny"></div>
+          <div class="bubble">
+            <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+            <time>8:00 PM</time>
+          </div>
+        </div>
+
+        <!-- Right bubble -->
+        <div class="msg-row right">
+          <div class="bubble">
+            <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+            <time>8:00 PM</time>
+          </div>
+          <div class="avatar tiny"></div>
+        </div>
+
+        <!-- Left bubble -->
+        <div class="msg-row left">
+          <div class="avatar tiny"></div>
+          <div class="bubble">
+            <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+            <time>8:00 PM</time>
+          </div>
+        </div>
+
+        <!-- Typing indicator -->
+        <div class="typing-row">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="who">OP กำลังพิมพ์…</span>
+        </div>
+      </div>
+
+      <!-- Composer -->
+      <form class="composer" id="composer" autocomplete="off">
+        <button class="icon-btn" type="button" title="Attach" aria-label="Attach file">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path d="M7 17a5 5 0 0 1 0-7l6-6a4 4 0 0 1 6 6l-7 7a3 3 0 1 1-4-4l7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+
+        <input id="msg-input" type="text" placeholder="Digite a mensagem" />
+
+        <div class="composer-actions">
+          <button class="icon-btn" type="button" title="Emoji">
+            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm-3 7a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 9 9Zm9 3a6 6 0 0 1-12 0h2a4 4 0 0 0 8 0Zm-1.5-1.5A1.5 1.5 0 1 1 18 9a1.5 1.5 0 0 1-1.5 1.5Z" fill="currentColor"/></svg>
+          </button>
+          <button class="send-btn" type="submit" title="Send" aria-label="Send">
+            <svg viewBox="0 0 24 24" width="20" height="20"><path d="m3 11 18-8-8 18-2-7-8-3z" fill="currentColor"/></svg>
+          </button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    // Minimal interactions (demo only)
+    const messagesEl = document.getElementById('messages');
+    const form = document.getElementById('composer');
+    const input = document.getElementById('msg-input');
+
+    const scrollToBottom = () => { messagesEl.scrollTop = messagesEl.scrollHeight; };
+    scrollToBottom();
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+
+      const row = document.createElement('div');
+      row.className = 'msg-row right';
+      row.innerHTML = `
+        <div class="bubble">
+          <p>${text.replace(/</g, '&lt;')}</p>
+          <time>${new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</time>
+        </div>
+        <div class="avatar tiny"></div>`;
+      messagesEl.appendChild(row);
+      input.value = '';
+      scrollToBottom();
+    });
+  </script>
+</body>
+</html>

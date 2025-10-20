@@ -3,89 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TradeHive — Login & Sign Up</title>
+  <title>TradeHive — Login</title>
 
-  <!-- Fonts & Styles -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="stylea.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/style-login.css">
 </head>
 <body>
-
   <div class="login-modal">
     <div class="login-modal-content">
-      <!-- LEFT: Sign up / Social (coming soon) -->
+      <!-- LEFT -->
       <section class="social-signup-section" aria-labelledby="signupTitle">
         <div class="logo-placeholder" aria-hidden="true"></div>
         <h2 id="signupTitle">เริ่มต้นการซื้อขายที่ปลอดภัยกว่า</h2>
         <p class="subtitle">Sign up</p>
 
-        <!-- Social buttons are disabled for now (coming soon) -->
-        <button class="social-btn google-btn is-disabled" type="button" disabled aria-disabled="true" title="Coming soon">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="" aria-hidden="true">
-          Continue with Google <span class="badge">soon</span>
-        </button>
+        <div class="social-buttons">
+          <button class="social-btn" type="button" disabled aria-disabled="true" title="Coming soon">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="">
+            Continue with Google <span class="badge">soon</span>
+          </button>
 
-        <button class="social-btn facebook-btn is-disabled" type="button" disabled aria-disabled="true" title="Coming soon">
-          <img src="imglogin/facebook-logo.png" alt="" aria-hidden="true">
-          Continue with Facebook <span class="badge">soon</span>
-        </button>
+          <button class="social-btn" type="button" disabled aria-disabled="true" title="Coming soon">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Facebook_icon.svg" alt="">
+            Continue with Facebook <span class="badge">soon</span>
+          </button>
+        </div>
 
         <p class="terms">
           By signing up, you agree to the
-          <a href="#" rel="noopener">Terms of Service</a> and acknowledge you've read our
-          <a href="#" rel="noopener">Privacy Policy</a>.
+          <a href="#">Terms of Service</a> and acknowledge you've read our
+          <a href="#">Privacy Policy</a>.
         </p>
       </section>
 
-      <!-- RIGHT: Email/Phone + Password Login -->
+      <!-- RIGHT -->
       <section class="email-login-section" aria-labelledby="loginTitle">
         <h2 class="subtitle" id="loginTitle">Log in</h2>
 
-        <!-- NOTE: เมื่อเชื่อมต่อแบ็กเอนด์ ใส่ action="/api/auth/login" method="post" -->
-        <form id="loginForm" novalidate>
-          <!-- สำหรับ PHP ใส่ CSRF hidden input ตรงนี้ -->
-          <!-- <input type="hidden" name="csrf" value="<?php echo htmlspecialchars($_SESSION['csrf']);?>"> -->
-
+        <form id="loginForm" novalidate aria-describedby="formMsg">
           <div class="input-group">
             <label for="identifier">Email or phone</label>
-            <input
-              id="identifier"
-              name="identifier"
-              type="text"
-              inputmode="email"
-              autocomplete="username"
-              placeholder="you@example.com หรือ 08x-xxx-xxxx"
-              required
-            />
+            <input id="identifier" name="identifier"
+                   type="text" inputmode="text"
+                   autocomplete="username"
+                   placeholder="you@example.com หรือ 08x-xxx-xxxx" required />
           </div>
 
-          <div class="input-group">
+          <div class="input-group password-wrap">
             <label for="password">Password</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autocomplete="current-password"
-              required
-            />
+            <input id="password" name="password" type="password" autocomplete="current-password" required />
             <button type="button" class="password-toggle" id="togglePass" aria-label="Show password">Show</button>
           </div>
 
-         <!-- ROW: remember + links (วางก่อนปุ่ม Log in) -->
-<div class="actions-row">
-  <label class="remember">
-    <input type="checkbox" id="remember"> Remember me (7 days)
-  </label>
-  
-  <div class="links">
-    <a href="Sign_up.php">Sign up</a>
-    <span class="divider">|</span>
-    <a href="forgot-password.php">Forgot password?</a>
-  </div>
-</div>
+          <div class="actions-row">
+            <label class="remember">
+              <input type="checkbox" id="remember"> Remember me (7 days)
+            </label>
 
+            <div class="links">
+              <a href="/signup.html">Sign up</a>
+              <span class="divider">|</span>
+              <a href="/forgot-password.html">Forgot password?</a>
+            </div>
+          </div>
 
           <button type="submit" class="login-btn" id="btnLogin">Log in</button>
           <p class="form-msg" id="formMsg" role="alert" aria-live="polite"></p>
@@ -95,34 +78,61 @@
   </div>
 
   <noscript>กรุณาเปิดใช้งาน JavaScript เพื่อเข้าสู่ระบบ</noscript>
+<script>
+  const form = document.getElementById('loginForm');
+  const msg  = document.getElementById('formMsg');
+  const pass = document.getElementById('password');
+  const toggle = document.getElementById('togglePass');
 
-  <script>
-    // Toggle show/hide password
-    const pass = document.getElementById('password');
-    const toggle = document.getElementById('togglePass');
-    toggle.addEventListener('click', () => {
-      const isHidden = pass.type === 'password';
-      pass.type = isHidden ? 'text' : 'password';
-      toggle.textContent = isHidden ? 'Hide' : 'Show';
-      toggle.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
-    });
+  // toggle show/hide password
+  toggle.addEventListener('click', () => {
+    const isHidden = pass.type === 'password';
+    pass.type = isHidden ? 'text' : 'password';
+    toggle.textContent = isHidden ? 'Hide' : 'Show';
+  });
 
-    // Demo front-end validation & message placeholder (เชื่อม API ทีหลัง)
-    document.getElementById('loginForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const id = document.getElementById('identifier').value.trim();
-      const pw = pass.value;
-      const msg = document.getElementById('formMsg');
+  // login submit → call our Node API
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-      if (!id || !pw) {
-        msg.textContent = 'กรอกข้อมูลให้ครบถ้วน';
-        msg.className = 'form-msg error';
+    const identifier = (document.getElementById('identifier').value || '').trim();
+    const password   = pass.value;
+    const remember   = document.getElementById('remember').checked;
+    msg.textContent  = '';
+    msg.className    = 'form-msg info';
+
+    if (!identifier || !password) {
+      msg.textContent = 'กรอกข้อมูลให้ครบถ้วน';
+      msg.className   = 'form-msg error';
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier, password, remember }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        msg.textContent = data.message || 'เข้าสู่ระบบไม่สำเร็จ';
+        msg.className   = 'form-msg error';
         return;
       }
-      msg.textContent = 'กำลังตรวจสอบ...';
-      msg.className = 'form-msg info';
-      // TODO: เชื่อมต่อ /api/auth/login แล้วจัดการ redirect
-    });
-  </script>
+
+      msg.textContent = 'เข้าสู่ระบบสำเร็จ! กำลังพาไป...';
+      msg.className   = 'form-msg info';
+      setTimeout(() => window.location.href = '/chat.html', 800);
+
+    } catch (err) {
+      console.error(err);
+      msg.textContent = 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้';
+      msg.className   = 'form-msg error';
+    }
+  });
+</script>
+
 </body>
 </html>

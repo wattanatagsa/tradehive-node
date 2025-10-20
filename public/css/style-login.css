@@ -1,0 +1,425 @@
+/* =========================
+   TradeHive – Login (final)
+   ========================= */
+:root {
+  --primary: #4a4de6;
+  --primary-hover: #383add;
+  --panel: rgba(255, 255, 255, 0.92);
+  --ring: rgba(74, 77, 230, 0.18);
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #dfe6f4;
+  --radius: 16px;
+}
+
+/* Base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: url("/uploads/system/Backgroundlogin.png") center/cover fixed
+    no-repeat;
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* Card container */
+.login-modal {
+  width: min(960px, 95%);
+}
+.login-modal-content {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 40px; /* ✅ เพิ่มช่องว่างระหว่างฝั่งซ้ายและขวา */
+  background: var(--panel);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  padding: 20px 32px; /* ✅ เพิ่ม padding รอบการ์ด */
+}
+
+@media (max-width: 940px) {
+  .login-modal-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Left column polish (Sign up + Social) ===== */
+
+/* พื้นที่และขอบ */
+.social-signup-section {
+  padding: 40px 42px; /* มากขึ้นเล็กน้อยให้โปร่ง */
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0.64)
+  );
+}
+
+/* โลโก้/ไอคอนบนซ้าย */
+.logo-placeholder {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: #e9edf7;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06) inset;
+}
+
+/* หัวข้อ & คำบรรยาย */
+.social-signup-section h2 {
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  margin: 0 0 10px;
+}
+.social-signup-section .subtitle {
+  color: var(--muted);
+  font-size: 15px;
+  margin: 0 0 18px;
+}
+
+/* กล่องปุ่ม Social – จำกัดความกว้างให้อ่านง่าย */
+.social,
+.social-buttons {
+  display: grid;
+  gap: 12px;
+  max-width: 420px; /* ✅ ไม่กว้างจนล้น */
+}
+
+/* ปุ่ม Social */
+.social-btn {
+  width: 100%;
+  height: 46px; /* ✅ สูงเท่าช่อง input */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  font-weight: 600;
+  color: #475569;
+  opacity: 0.65;
+  cursor: not-allowed;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+/* ไอคอนซ้าย */
+.social-btn img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  flex: 0 0 18px;
+}
+
+/* badge ขยับไปชิดขวาเสมอ */
+.social-btn .badge {
+  margin-left: auto; /* ✅ ดันไปขวา */
+  font-size: 11px;
+  background: #eef2ff;
+  color: var(--primary);
+  padding: 2px 6px;
+  border-radius: 999px;
+}
+
+/* ข้อความ Terms */
+.terms {
+  margin-top: 12px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: #7b879a;
+  max-width: 420px;
+}
+.terms a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+/* RIGHT side (form) */
+.email-login-section {
+  padding: 36px 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  max-width: 480px; /* ✅ กันข้อความหักบรรทัด/ไม่เบียด */
+  margin-left: auto;
+}
+.email-login-section h2 {
+  margin: 0 0 10px;
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.input-group {
+  margin-bottom: 14px;
+}
+.input-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.input-group input {
+  width: 100%;
+  height: 44px;
+  line-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 14px;
+  background: #fff;
+  outline: none;
+  transition: border 0.15s, box-shadow 0.15s;
+}
+.input-group input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--ring);
+}
+
+/* password with Show button */
+.password-wrap {
+  position: relative;
+}
+.password-wrap input {
+  padding-right: 64px;
+} /* ✅ เว้นที่ให้ปุ่ม Show */
+.password-toggle {
+  position: absolute;
+  right: 14px;
+  top: 70%; /* ✅ ขยับลงอีกเล็กน้อย */
+  transform: translateY(-50%); /* ✅ ให้ตำแหน่งคงอยู่แนวกึ่งกลางจริง */
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* Remember + links */
+.actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 12px 0 18px;
+  flex-wrap: wrap; /* ✅ กันข้อความล้นในจอเล็ก */
+}
+
+.remember {
+  display: flex;
+  align-items: center; /* ✅ จัด checkbox ให้อยู่แนวเดียวกับข้อความ */
+  gap: 6px;
+  font-size: 13px;
+  white-space: nowrap; /* ✅ บังคับข้อความให้อยู่บรรทัดเดียว */
+}
+
+.remember input[type="checkbox"] {
+  transform: scale(1.1); /* ✅ ขยาย checkbox ใหญ่ขึ้นนิดให้บาลานซ์ */
+  accent-color: var(--primary);
+}
+
+@media (min-width: 720px) {
+  .actions-row {
+    flex-wrap: nowrap;
+  }
+}
+.remember {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+.remember input {
+  transform: translateY(1px);
+}
+.links {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 6px;
+}
+.links a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+} /* ✅ ไม่แยกคำ */
+.divider {
+  opacity: 0.4;
+}
+
+/* Submit button */
+.login-btn {
+  height: 46px;
+  line-height: 46px;
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 12px 26px rgba(74, 77, 230, 0.24);
+  transition: filter 0.15s, transform 0.1s;
+}
+.login-btn:hover {
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+}
+
+/* Messages */
+.form-msg {
+  font-size: 13px;
+  margin-top: 8px;
+}
+.form-msg.error {
+  color: #d93636;
+}
+.form-msg.info {
+  color: #0b61d6;
+}
+/* ===============================
+   📱 Responsive: Mobile Login Only
+   =============================== */
+@media (max-width: 900px) {
+  /* ซ่อนฝั่ง Sign-up */
+  .social-signup-section {
+    display: none;
+  }
+
+  /* การ์ด Log in */
+  .login-modal-content {
+    grid-template-columns: 1fr;
+    gap: 0;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 40px 28px 48px;
+    width: 100%;
+    max-width: 380px;
+    margin: auto;
+    backdrop-filter: blur(12px);
+  }
+
+  /* พื้นหลังเต็มจอ */
+  body {
+    background: url("/uploads/system/Backgroundlogin.png") center/cover
+      no-repeat fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    min-height: 100vh;
+  }
+
+  /* การ์ดหลัก */
+  .login-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  /* หัวข้อ */
+  .email-login-section h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #1f2937;
+  }
+
+  /* ช่อง input */
+  .input-group input {
+    font-size: 15px;
+    padding: 13px 16px;
+    border-radius: 12px;
+    border: 1px solid #dfe6f4;
+  }
+
+  .input-group label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #374151;
+  }
+
+  /* ปุ่ม Show */
+  .password-toggle {
+    top: 58%;
+    right: 14px;
+    transform: translateY(-50%);
+    color: #4a4de6;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* Remember row */
+  .actions-row {
+    margin-top: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .remember {
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .links a {
+    font-weight: 600;
+    font-size: 13.5px;
+    color: #4a4de6;
+  }
+
+  /* ปุ่ม Log in */
+  .login-btn {
+    margin-top: 6px;
+    width: 100%;
+    height: 48px;
+    border: none;
+    border-radius: 12px;
+    background: #4a4de6;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    box-shadow: 0 6px 18px rgba(74, 77, 230, 0.25);
+    transition: all 0.2s ease;
+  }
+
+  .login-btn:hover {
+    background: #3a3bd8;
+    box-shadow: 0 8px 22px rgba(74, 77, 230, 0.3);
+  }
+
+  /* ข้อความแจ้งเตือน */
+  .form-msg {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 13px;
+  }
+}

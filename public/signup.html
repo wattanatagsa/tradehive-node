@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TradeHive – Sign up</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style-signup.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="page">
+      <div class="dot" aria-hidden="true"></div>
+      <h1>Sign up for free to start live-streaming</h1>
+
+      <!-- Social buttons -->
+      <div class="social">
+        <button type="button" disabled>
+          <img alt="Facebook" src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Facebook_icon.svg" />
+          Sign up with Facebook <span class="badge">soon</span>
+        </button>
+        <button type="button" disabled>
+          <img alt="Google" src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" />
+          Sign up with Google <span class="badge">soon</span>
+        </button>
+      </div>
+
+      <div class="divider">Sign up with your email address <strong style="font-weight:600">OR</strong></div>
+
+      <!-- Form -->
+      <form id="signupForm" novalidate>
+        <div class="field">
+          <label for="profile">Full name</label>
+          <input id="profile" name="profile" type="text" placeholder="Enter your full name" required />
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="Enter your email address" />
+        </div>
+
+        <div class="field pwd">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" placeholder="Enter your password" required />
+          <button class="toggle" type="button" id="togglePwd">Show</button>
+          <div class="hint">Use 8+ characters with a mix of letters, numbers & symbols</div>
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone number</label>
+          <input id="phone" name="phone" type="text" placeholder="Enter your phone number" required />
+        </div>
+
+        <!-- OTP section -->
+        <div class="field" id="otpSection" style="display:none;">
+          <label for="otp">Enter OTP</label>
+          <input id="otp" name="otp" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="6-digit code" />
+          <button id="verifyOtpBtn" type="button" style="margin-top:8px;">Verify OTP</button>
+          <p id="otpMsg" style="font-size:13px;color:#6b7280;"></p>
+        </div>
+
+        <div class="submit">
+          <button id="submitBtn" type="submit">Sign up</button>
+        </div>
+
+        <p class="form-msg" id="formMsg" role="alert" aria-live="polite"></p>
+      </form>
+
+      <div class="foot">Already have an account? <a href="/login.html">Log in</a></div>
+    </div>
+  </div>
+
+  <script>
+    // === Show/Hide password ===
+    const tgl = document.getElementById('togglePwd');
+    const pwd = document.getElementById('password');
+    tgl.addEventListener('click', () => {
+      const isPwd = pwd.type === 'password';
+      pwd.type = isPwd ? 'text' : 'password';
+      tgl.textContent = isPwd ? 'Hide' : 'Show';
+    });
+
+    // === Helpers ===
+    const toE164TH = (raw) => {
+      const d = String(raw || '').replace(/\D/g, '');
+      if (!d) return '';
+      if (d.startsWith('0')) return `+66${d.slice(1)}`;
+      if (d.startsWith('66')) return `+${d}`;
+      if (raw.startsWith('+')) return raw;
+      return `+${d}`;
+    };
+
+    const msg = document.getElementById('formMsg');
+    const otpSection = document.getElementById('otpSection');
+    const otpInput = document.getElementById('otp');
+    const otpMsg = document.getElementById('otpMsg');
+    const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+
+    // === Register ===
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msg.textContent = '';
+      msg.className = 'form-msg info';
+
+      const name = document.getElementById('profile').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const phoneRaw = document.getElementById('phone').value.trim();
+      const phone = toE164TH(phoneRaw);
+
+      if (!name || !password || !phone) {
+        msg.textContent = 'กรุณากรอกชื่อ เบอร์โทร และรหัสผ่าน';
+        msg.className = 'form-msg error';
+        return;
+      }
+
+      const payload = { name, email, password, phone };
+
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.ok) throw new Error(data.message || 'Register failed');
+
+        msg.textContent = 'สมัครสำเร็จ! กำลังส่งรหัส OTP ไปยังเบอร์ของคุณ...';
+        msg.className = 'form-msg success';
+        otpSection.style.display = 'block'; // แสดงช่อง OTP
+      } catch (err) {
+        msg.textContent = err.message;
+        msg.className = 'form-msg error';
+      }
+    });
+
+    // === Verify OTP ===
+    verifyOtpBtn.addEventListener('click', async () => {
+      const phone = toE164TH(document.getElementById('phone').value);
+      const code = otpInput.value.trim();
+
+      if (!code) {
+        otpMsg.textContent = 'กรุณากรอกรหัส OTP';
+        otpMsg.style.color = '#dc2626';
+        return;
+      }
+
+      otpMsg.textContent = 'กำลังตรวจสอบ...';
+      otpMsg.style.color = '#6b7280';
+
+      try {
+        const res = await fetch('/api/auth/verify-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone, code })
+        });
+        const data = await res.json();
+
+        if (!res.ok || !data.ok) throw new Error(data.message || 'OTP ไม่ถูกต้อง');
+
+        otpMsg.textContent = 'ยืนยันเบอร์สำเร็จ ✓ กำลังพาไปหน้าเข้าสู่ระบบ...';
+        otpMsg.style.color = '#16a34a';
+        setTimeout(() => (window.location.href = '/login.html'), 1500);
+      } catch (err) {
+        otpMsg.textContent = err.message;
+        otpMsg.style.color = '#dc2626';
+      }
+    });
+  </script>
+</body>
+</html>
